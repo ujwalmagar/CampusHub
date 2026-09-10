@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="border-bottom pb-2">Student Dashboard</h2>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Quick Stats -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">My Registrations</h5>
+                <p class="display-4">{{ my_registrations.count }}</p>
+                <a href="#" class="btn btn-primary btn-sm">View All</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-hands-helping fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Volunteer Tasks</h5>
+                <p class="display-4">{{ my_volunteer_tasks.count }}</p>
+                <a href="{% url 'student_tasks' %}" class="btn btn-outline-light mt-2 w-100">View All</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-header">
+                Upcoming Events
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for event in upcoming_events %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ event.title }}
+                    <span class="badge bg-secondary rounded-pill">{{ event.event_date|date:"M d, Y" }}</span>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">No upcoming events available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                Recent Registrations
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for reg in my_registrations %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ reg.event.title }}
+                    {% if reg.status == 'CONFIRMED' %}
+                        <span class="badge bg-success">Confirmed</span>
+                    {% elif reg.status == 'PENDING' %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% else %}
+                        <span class="badge bg-danger">Cancelled</span>
+                    {% endif %}
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">You haven't registered for any events yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                My Volunteer Tasks
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for task in my_volunteer_tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ task.task_name }} ({{ task.event.title }})
+                    {% if task.task_status == 'COMPLETED' %}
+                        <span class="badge bg-success">Completed</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ task.task_status }}</span>
+                    {% endif %}
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">You have no volunteer tasks.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

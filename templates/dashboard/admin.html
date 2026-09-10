@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <h2 class="border-bottom pb-2 mb-0">Admin Dashboard</h2>
+        <a href="{% url 'admin_reports' %}" class="btn btn-outline-primary">View Reports</a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Summary Cards -->
+    <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Total Students</h6>
+                <h2 class="card-text">{{ total_students }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Total Events</h6>
+                <h2 class="card-text">{{ total_events }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Registrations</h6>
+                <h2 class="card-text">{{ total_registrations }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Volunteer Tasks</h6>
+                <h2 class="card-text">{{ total_volunteers }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Pending Registrations -->
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Pending Registrations (Waitlist)</span>
+                
+                <!-- This triggers the Background Task we built in Phase 8 -->
+                <form action="/api/registrations/process/" method="post" class="d-inline" id="processForm">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-dark">Process Queue</button>
+                </form>
+                
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Student</th>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reg in pending_registrations %}
+                        <tr>
+                            <td>{{ reg.student.name }}</td>
+                            <td>{{ reg.event.title }}</td>
+                            <td>{{ reg.registered_at|date:"M d, H:i" }}</td>
+                            <td><span class="badge bg-warning text-dark">{{ reg.status }}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-3">No pending registrations.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                Quick Actions
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{% url 'event_manage' %}" class="list-group-item list-group-item-action">Manage Events</a>
+                <a href="#" class="list-group-item list-group-item-action">Manage Students</a>
+                <a href="{% url 'volunteer_manage' %}" class="list-group-item list-group-item-action">Manage Volunteer Tasks</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Handle the async background processing form submission gracefully
+    document.getElementById('processForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if(response.status === 202) {
+                alert('Background processing started successfully! The database is being updated.');
+                setTimeout(() => window.location.reload(), 1500); // Reload to show updated totals
+            } else {
+                alert('An error occurred starting the process.');
+            }
+        });
+    });
+</script>
+{% endblock %}
