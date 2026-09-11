@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col-12">
-        <h2 class="border-bottom pb-2">Upcoming Events</h2>
-    </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="border-bottom pb-2 mb-0">Upcoming Events</h2>
 </div>
 
-<div class="row">
+<div class="row g-4">
     {% for event in events %}
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">{{ event.title }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ event.event_date|date:"M d, Y H:i" }}</h6>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-dark mb-2">{{ event.title }}</h5>
+                <h6 class="card-subtitle mb-3 text-muted"><i class="fa-regular fa-clock me-1"></i>{{ event.event_date|date:"M d, Y H:i" }}</h6>
                 <p class="card-text">{{ event.description|truncatewords:20 }}</p>
-                <ul class="list-unstyled">
-                    <li><strong>Location:</strong> {{ event.location }}</li>
-                    <li><strong>Capacity:</strong> {{ event.capacity }}</li>
-                </ul>
+                <div class="mt-auto pt-3 border-top">
+                    <ul class="list-unstyled text-muted small mb-0">
+                        <li class="mb-1"><i class="fa-solid fa-location-dot me-2"></i><strong>Location:</strong> {{ event.location }}</li>
+                        <li><i class="fa-solid fa-users me-2"></i><strong>Capacity:</strong> {{ event.capacity }}</li>
+                    </ul>
+                </div>
             </div>
-            <div class="card-footer bg-transparent">
+            <div class="card-footer bg-white border-top-0 pt-0 pb-3">
                 <!-- Direct form to the API endpoint -->
                 <form action="/api/registrations/" method="post">
                     {% csrf_token %}
@@ -32,8 +32,12 @@
         </div>
     </div>
     {% empty %}
-    <div class="col-12 text-center text-muted mt-5">
-        <h4>No upcoming events found.</h4>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                {% include 'components/empty_state.html' with icon="fa-regular fa-calendar-xmark" title="No events found" message="There are currently no upcoming events available for registration." %}
+            </div>
+        </div>
     </div>
     {% endfor %}
 </div>

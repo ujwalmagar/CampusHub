@@ -1,0 +1,9 @@
+{% if status|lower == 'confirmed' or status|lower == 'approved' or status|lower == 'completed' %}
+    <span class="badge badge-success"><i class="fa-solid fa-check-circle me-1"></i>{{ status|title }}</span>
+{% elif status|lower == 'pending' %}
+    <span class="badge badge-warning"><i class="fa-solid fa-clock me-1"></i>{{ status|title }}</span>
+{% elif status|lower == 'cancelled' or status|lower == 'rejected' or status|lower == 'error' %}
+    <span class="badge badge-danger"><i class="fa-solid fa-xmark-circle me-1"></i>{{ status|title }}</span>
+{% else %}
+    <span class="badge badge-info"><i class="fa-solid fa-info-circle me-1"></i>{{ status|title }}</span>
+{% endif %}

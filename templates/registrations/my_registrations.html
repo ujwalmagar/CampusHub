@@ -1,50 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col-12">
-        <h2 class="border-bottom pb-2">My Registrations</h2>
-    </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="border-bottom pb-2 mb-0">My Registrations</h2>
+    <a href="{% url 'event_list' %}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Register for Event</a>
 </div>
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body p-0">
-                <table class="table table-striped table-hover mb-0">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Event Title</th>
-                            <th>Date</th>
-                            <th>Location</th>
-                            <th>Status</th>
-                            <th>Registered On</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for reg in registrations %}
-                        <tr>
-                            <td>{{ reg.event.title }}</td>
-                            <td>{{ reg.event.event_date|date:"M d, Y H:i" }}</td>
-                            <td>{{ reg.event.location }}</td>
-                            <td>
-                                {% if reg.status == 'CONFIRMED' %}
-                                    <span class="badge bg-success">Confirmed</span>
-                                {% elif reg.status == 'PENDING' %}
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                {% else %}
-                                    <span class="badge bg-danger">Cancelled</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ reg.registered_at|date:"M d, Y H:i" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="text-center text-muted py-4">You have not registered for any events yet.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Event Title</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Registered On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reg in registrations %}
+                            <tr>
+                                <td class="font-weight-500">{{ reg.event.title }}</td>
+                                <td>{{ reg.event.event_date|date:"M d, Y H:i" }}</td>
+                                <td><i class="fa-solid fa-location-dot text-muted me-1"></i>{{ reg.event.location }}</td>
+                                <td>
+                                    {% include 'components/status_badge.html' with status=reg.status %}
+                                </td>
+                                <td class="text-muted">{{ reg.registered_at|date:"M d, Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="p-0 border-0">
+                                    {% include 'components/empty_state.html' with icon="fa-solid fa-clipboard-list" title="No Registrations" message="You have not registered for any events yet." action_url="/events/" action_text="Browse Events" %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

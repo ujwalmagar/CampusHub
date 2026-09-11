@@ -1,50 +1,44 @@
-# Entity Relationship Diagram
+# Entity-Relationship Diagram
 
-This diagram visualizes the table entities and their relationships within the Campus Event & Volunteer Management System Oracle Database.
+This diagram visualizes the actual logical schema implemented in the Oracle Database via the Django ORM.
 
 ```mermaid
 erDiagram
-    STUDENTS ||--o{ REGISTRATIONS : "enrolls in"
-    EVENTS ||--o{ REGISTRATIONS : "hosts"
-    
+    STUDENTS ||--o{ REGISTRATIONS : "makes"
     STUDENTS ||--o{ VOLUNTEER_TASKS : "assigned to"
-    EVENTS ||--o{ VOLUNTEER_TASKS : "requires"
+    EVENTS ||--o{ REGISTRATIONS : "receives"
+    EVENTS ||--o{ VOLUNTEER_TASKS : "has"
 
     STUDENTS {
-        NUMBER student_id PK
-        NUMBER user_id UK "FK to auth_user"
-        VARCHAR2 name
-        VARCHAR2 email UK
-        VARCHAR2 phone
-        VARCHAR2 course
-        TIMESTAMP created_at
+        number id PK
+        string name
+        string email
+        string roll_number
+        string program
     }
 
     EVENTS {
-        NUMBER event_id PK
-        VARCHAR2 title
-        CLOB description
-        TIMESTAMP event_date
-        VARCHAR2 location
-        NUMBER capacity "CHECK capacity > 0"
-        VARCHAR2 status
-        TIMESTAMP created_at
+        number id PK
+        string title
+        string description
+        date event_date
+        string location
+        number capacity
     }
 
     REGISTRATIONS {
-        NUMBER registration_id PK
-        NUMBER student_id FK
-        NUMBER event_id FK
-        VARCHAR2 status
-        TIMESTAMP registered_at
+        number id PK
+        number student_id FK
+        number event_id FK
+        date registered_at
+        string status "CONFIRMED, PENDING, CANCELLED"
     }
 
     VOLUNTEER_TASKS {
-        NUMBER task_id PK
-        NUMBER event_id FK
-        NUMBER student_id FK
-        VARCHAR2 task_name
-        VARCHAR2 task_status
-        TIMESTAMP created_at
+        number id PK
+        number event_id FK
+        number student_id FK
+        string task_name
+        string task_status "PENDING, IN_PROGRESS, COMPLETED"
     }
 ```

@@ -1,53 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="main-container container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="border-bottom pb-2 mb-0">My Volunteer Tasks</h2>
-    </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="border-bottom pb-2 mb-0">My Volunteer Tasks</h2>
+</div>
 
-    <div class="row g-4">
-        {% for task in tasks %}
-        <div class="col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>{{ task.event.title }}</span>
-                    <span class="badge {% if task.task_status == 'ASSIGNED' %}bg-info{% elif task.task_status == 'IN_PROGRESS' %}bg-warning{% elif task.task_status == 'COMPLETED' %}bg-success{% else %}bg-secondary{% endif %}">
-                        {{ task.get_task_status_display }}
-                    </span>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title mb-3">{{ task.task_name }}</h5>
-                    <p class="card-text text-muted small mb-4">
-                        <i class="far fa-calendar-alt me-2"></i>{{ task.event.event_date|date:"M d, Y" }}<br>
-                        <i class="fas fa-map-marker-alt me-2"></i>{{ task.event.location }}
-                    </p>
-                    
-                    {% if task.task_status != 'COMPLETED' and task.task_status != 'CANCELLED' %}
-                    <form method="post" action="{% url 'student_task_update' task.pk %}" class="mt-auto">
-                        {% csrf_token %}
-                        <div class="input-group">
-                            <select name="task_status" class="form-select form-select-sm">
-                                <option value="ASSIGNED" {% if task.task_status == 'ASSIGNED' %}selected{% endif %}>Assigned</option>
-                                <option value="IN_PROGRESS" {% if task.task_status == 'IN_PROGRESS' %}selected{% endif %}>In Progress</option>
-                                <option value="COMPLETED" {% if task.task_status == 'COMPLETED' %}selected{% endif %}>Completed</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
-                        </div>
-                    </form>
-                    {% endif %}
-                </div>
+<div class="row g-4">
+    {% for task in tasks %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="font-weight-500 text-dark">{{ task.event.title }}</span>
+                {% include 'components/status_badge.html' with status=task.task_status %}
+            </div>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-dark mb-3">{{ task.task_name }}</h5>
+                <p class="card-text text-muted small mb-4">
+                    <i class="fa-regular fa-calendar-alt me-2"></i>{{ task.event.event_date|date:"M d, Y" }}<br>
+                    <i class="fa-solid fa-map-marker-alt me-2"></i>{{ task.event.location }}
+                </p>
+                
+                {% if task.task_status != 'COMPLETED' and task.task_status != 'CANCELLED' %}
+                <form method="post" action="{% url 'student_task_update' task.pk %}" class="mt-auto">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <select name="task_status" class="form-select form-select-sm">
+                            <option value="ASSIGNED" {% if task.task_status == 'ASSIGNED' %}selected{% endif %}>Assigned</option>
+                            <option value="IN_PROGRESS" {% if task.task_status == 'IN_PROGRESS' %}selected{% endif %}>In Progress</option>
+                            <option value="COMPLETED" {% if task.task_status == 'COMPLETED' %}selected{% endif %}>Completed</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm px-3">Update</button>
+                    </div>
+                </form>
+                {% endif %}
             </div>
         </div>
-        {% empty %}
-        <div class="col-12 text-center py-5">
-            <div class="text-muted">
-                <i class="fas fa-hands-helping fa-3x mb-3 text-secondary"></i>
-                <h5>No tasks assigned yet.</h5>
-                <p>Check back later or contact the admin for volunteer opportunities!</p>
-            </div>
-        </div>
-        {% endfor %}
     </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                {% include 'components/empty_state.html' with icon="fa-solid fa-hands-helping" title="No tasks assigned yet" message="Check back later or contact the admin for volunteer opportunities!" %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

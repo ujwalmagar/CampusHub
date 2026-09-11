@@ -17,213 +17,249 @@
 
     <style>
         :root {
-            --primary-bg: #0f172a;
-            --secondary-bg: #1e293b;
-            --accent-color: #3b82f6;
-            --accent-hover: #2563eb;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary-bg: #f8fafc;
+            --surface-color: #ffffff;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --nav-bg: #ffffff;
+            
+            /* Semantic Colors */
+            --status-success: #10b981;
+            --status-success-bg: #d1fae5;
+            --status-pending: #f59e0b;
+            --status-pending-bg: #fef3c7;
+            --status-error: #ef4444;
+            --status-error-bg: #fee2e2;
+            --status-info: #3b82f6;
+            --status-info-bg: #dbeafe;
         }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, var(--primary-bg) 0%, #020617 100%);
+            background-color: var(--primary-bg);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Glassmorphism Navbar */
+        /* Clean Navbar */
         .navbar {
-            background: var(--glass-bg) !important;
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1rem 0;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            background-color: var(--nav-bg) !important;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 0;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
         .navbar-brand {
             font-weight: 700;
             font-size: 1.5rem;
-            background: linear-gradient(to right, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--accent-color) !important;
             letter-spacing: -0.5px;
         }
 
         .nav-link {
             font-weight: 500;
             color: var(--text-muted) !important;
-            transition: all 0.3s ease;
-            position: relative;
+            transition: all 0.2s ease;
         }
 
         .nav-link:hover, .nav-link.active {
-            color: white !important;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background-color: #38bdf8;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
+            color: var(--text-main) !important;
         }
 
-        /* Glassmorphism Cards */
+        .navbar-text {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+        }
+
+        /* Clean Cards */
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            color: white;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-main);
+            transition: box-shadow 0.2s ease;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1.5rem;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .card-header {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border-bottom: 1px solid var(--glass-border);
+            background-color: var(--surface-color) !important;
+            border-bottom: 1px solid var(--border-color);
             font-weight: 600;
             letter-spacing: 0.5px;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            color: #e2e8f0 !important;
+            font-size: 0.9rem;
+            color: var(--text-muted) !important;
+            padding: 1rem 1.25rem;
         }
         
         .card-title {
             font-weight: 600;
             font-size: 1.25rem;
-            color: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .card-body {
+            padding: 1.25rem;
         }
 
         .list-group-item {
-            background: transparent !important;
-            color: var(--text-muted) !important;
-            border-color: var(--glass-border) !important;
+            background-color: var(--surface-color) !important;
+            color: var(--text-main) !important;
+            border-color: var(--border-color) !important;
+            padding: 1rem 1.25rem;
         }
 
         /* Buttons */
-        .btn-primary {
-            background: linear-gradient(to right, var(--accent-color), #6366f1);
-            border: none;
-            border-radius: 8px;
+        .btn {
             font-weight: 500;
-            padding: 0.6rem 1.5rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+            border-radius: 8px;
+            padding: 0.5rem 1.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-            background: linear-gradient(to right, var(--accent-hover), #4f46e5);
+            background-color: var(--accent-hover);
+            border-color: var(--accent-hover);
         }
         
+        .btn-outline-primary {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
         .btn-outline-light {
-            border-radius: 8px;
-            border-color: rgba(255, 255, 255, 0.3);
-            font-weight: 500;
-            backdrop-filter: blur(4px);
+            border-color: var(--border-color);
+            color: var(--text-main);
+            background-color: var(--surface-color);
         }
         
         .btn-outline-light:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: white;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            border-color: var(--border-color);
+        }
+        
+        .btn-danger {
+            background-color: var(--status-error);
+            border-color: var(--status-error);
+        }
+        
+        .btn-success {
+            background-color: var(--status-success);
+            border-color: var(--status-success);
         }
 
         /* Tables */
+        .table-responsive {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            background-color: var(--surface-color);
+        }
+
         .table {
-            color: var(--text-muted) !important;
+            color: var(--text-main) !important;
             margin-bottom: 0;
+            background-color: var(--surface-color);
         }
         
-        .table-light, .table-dark {
-            --bs-table-bg: rgba(255, 255, 255, 0.05);
-            --bs-table-color: white;
-            border-bottom: 1px solid var(--glass-border);
-        }
-        
-        .table-striped>tbody>tr:nth-of-type(odd)>* {
-            --bs-table-accent-bg: rgba(255, 255, 255, 0.02);
+        .table th {
+            border-bottom: 2px solid var(--border-color);
+            background-color: #f8fafc;
             color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 1rem;
         }
         
-        .table td, .table th {
-            border-color: var(--glass-border);
+        .table td {
+            border-bottom: 1px solid var(--border-color);
             padding: 1rem;
             vertical-align: middle;
+            color: var(--text-main);
         }
         
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
 
+        .table-hover tbody tr:hover {
+            background-color: #f1f5f9;
+        }
 
         /* Headings */
         h2.border-bottom {
-            border-bottom-color: var(--glass-border) !important;
+            border-bottom: 1px solid var(--border-color) !important;
             font-weight: 700;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
+            color: var(--text-main);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
         }
         
         /* Badges */
         .badge {
-            font-weight: 500;
+            font-weight: 600;
             padding: 0.4em 0.8em;
             border-radius: 6px;
+            font-size: 0.75rem;
         }
         
-        .bg-success { background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; border: 1px solid rgba(16, 185, 129, 0.3); }
-        .bg-warning { background: rgba(245, 158, 11, 0.2) !important; color: #fbbf24 !important; border: 1px solid rgba(245, 158, 11, 0.3); }
-        .bg-danger { background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .bg-info { background: rgba(56, 189, 248, 0.2) !important; color: #38bdf8 !important; border: 1px solid rgba(56, 189, 248, 0.3); }
-        .bg-primary { background: rgba(99, 102, 241, 0.2) !important; color: #818cf8 !important; border: 1px solid rgba(99, 102, 241, 0.3); }
+        .badge-success { background-color: var(--status-success-bg); color: var(--status-success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-warning { background-color: var(--status-pending-bg); color: var(--status-pending); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .badge-danger { background-color: var(--status-error-bg); color: var(--status-error); border: 1px solid rgba(239, 68, 68, 0.2); }
+        .badge-info { background-color: var(--status-info-bg); color: var(--status-info); border: 1px solid rgba(59, 130, 246, 0.2); }
 
         /* Form Inputs */
         .form-control, .form-select, input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea {
-            background-color: rgba(15, 23, 42, 0.6) !important;
-            border: 1px solid var(--glass-border) !important;
-            color: white !important;
+            background-color: var(--surface-color) !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-main) !important;
             border-radius: 8px;
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 1rem;
             width: 100%;
             display: block;
+            transition: all 0.2s ease;
         }
         
         .form-control:focus, .form-select:focus, input:focus, select:focus, textarea:focus {
-            background-color: rgba(15, 23, 42, 0.8) !important;
-            border-color: #3b82f6 !important;
-            color: white !important;
-            box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+            background-color: var(--surface-color) !important;
+            border-color: var(--accent-color) !important;
+            color: var(--text-main) !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
             outline: none;
         }
 
         ::placeholder {
-            color: rgba(255, 255, 255, 0.5) !important;
+            color: #94a3b8 !important;
             opacity: 1;
         }
         
         .form-label {
-            color: var(--text-muted);
+            color: var(--text-main);
             font-weight: 500;
             font-size: 0.9rem;
             margin-bottom: 0.4rem;
@@ -233,17 +269,43 @@
         .main-container {
             flex: 1;
             padding: 2rem 0;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.4s ease-out;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h5 {
+            color: var(--text-main);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            margin-bottom: 1.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="#">CampusHub</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -268,15 +330,15 @@
                         </li>
                         {% endif %}
                     </ul>
-                    <span class="navbar-text me-3 text-white">Welcome, {{ user.username }}</span>
+                    <span class="navbar-text me-3 text-dark font-weight-500">Welcome, {{ user.username }}</span>
                     <form action="{% url 'logout' %}" method="post" class="d-inline">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                        <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-right-from-bracket me-1"></i>Logout</button>
                     </form>
                 {% else %}
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm me-2 mb-2 mb-lg-0">Login</a>
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2 mb-2 mb-lg-0">Login</a>
                         </li>
                         <li class="nav-item">
                             <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Sign Up</a>
